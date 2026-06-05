@@ -3,52 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <title>StreamFlix IA</title>
+
+<style>
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	background: #141414;
+	color: white;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.card {
+	background: #222;
+	padding: 40px;
+	border-radius: 30px;
+	width: 400px;
+	box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+	text-align: center;
+	color: #e50914;
+}
+
+label {
+	display: block;
+	margin-top: 15px;
+	margin-bottom: 5px;
+}
+
+select {
+	width: 100%;
+	padding: 10px;
+	border: none;
+	border-radius: 15px;
+}
+
+button {
+	width: 100%;
+	margin-top: 25px;
+	padding: 12px;
+	border: none;
+	border-radius: 20px;
+	
+	background: #e50914;
+	color: white;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+button:hover {
+	background: #b20710;
+}
+</style>
+
 </head>
 <body>
 
-<h1>Sistema de Recomendación de Películas</h1>
+	<div class="card">
 
-<form action="recomendar.jsp" method="get">
+		<h1>STREAMFLIX IA</h1>
 
-<p>
-Genero:
-<select name="genero">
+		<form action="recomendar.jsp" method="get">
 
-<option>Accion</option>
-<option>Comedia</option>
-<option>Terror</option>
-<option>Drama</option>
-<option>CienciaFiccion</option>
+			<label>Género</label> <select name="genero">
 
-</select>
-</p>
+				<option>Accion</option>
+				<option>Comedia</option>
+				<option>Terror</option>
+				<option>Drama</option>
+				<option>CienciaFiccion</option>
 
-<p>
-Edad:
-<select name="edad">
+			</select> <label>Edad</label> <select name="edad">
 
-<option>Joven</option>
-<option>Adulto</option>
+				<option>Joven</option>
+				<option>Adulto</option>
 
-</select>
-</p>
+			</select> <label>Frecuencia</label> <select name="frecuencia">
 
-<p>
-Frecuencia:
-<select name="frecuencia">
+				<option>Baja</option>
+				<option>Media</option>
+				<option>Alta</option>
 
-<option>Baja</option>
-<option>Media</option>
-<option>Alta</option>
+			</select>
 
-</select>
-</p>
+			<button type="submit">Obtener recomendación</button>
 
-<input
-    type="submit"
-    value="Obtener recomendación">
+		</form>
 
-</form>
+	</div>
 
 </body>
 </html>

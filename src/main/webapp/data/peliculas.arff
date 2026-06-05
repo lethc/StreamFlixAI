@@ -8,21 +8,61 @@
 @data
 
 Accion,Joven,Alta,Avengers
-Accion,Joven,Media,JohnWick
+Accion,Joven,Media,Avengers
+Accion,Adulto,Alta,Avengers
+
+Accion,Adulto,Media,JohnWick
+Accion,Joven,Baja,JohnWick
+Accion,Adulto,Baja,JohnWick
+
 Accion,Adulto,Alta,MadMax
+Accion,Adulto,Media,MadMax
+Accion,Joven,Alta,MadMax
 
 Comedia,Joven,Alta,Deadpool
-Comedia,Joven,Media,TheMask
+Comedia,Joven,Media,Deadpool
+Comedia,Adulto,Alta,Deadpool
+
+Comedia,Adulto,Media,TheMask
+Comedia,Joven,Baja,TheMask
+Comedia,Adulto,Baja,TheMask
+
 Comedia,Adulto,Alta,Superbad
+Comedia,Adulto,Media,Superbad
+Comedia,Joven,Alta,Superbad
 
 Terror,Joven,Alta,TheConjuring
+Terror,Joven,Media,TheConjuring
+Terror,Adulto,Alta,TheConjuring
+
 Terror,Adulto,Media,Insidious
+Terror,Adulto,Baja,Insidious
+Terror,Joven,Media,Insidious
+
 Terror,Adulto,Baja,IT
+Terror,Joven,Baja,IT
+Terror,Adulto,Media,IT
 
 Drama,Adulto,Alta,Titanic
+Drama,Adulto,Media,Titanic
+Drama,Joven,Alta,Titanic
+
 Drama,Adulto,Media,ForrestGump
+Drama,Adulto,Baja,ForrestGump
+Drama,Joven,Media,ForrestGump
+
 Drama,Joven,Baja,PursuitOfHappyness
+Drama,Adulto,Baja,PursuitOfHappyness
+Drama,Joven,Media,PursuitOfHappyness
 
 CienciaFiccion,Joven,Alta,Interstellar
+CienciaFiccion,Joven,Media,Interstellar
+CienciaFiccion,Adulto,Alta,Interstellar
+
 CienciaFiccion,Adulto,Alta,TheMatrix
+CienciaFiccion,Adulto,Media,TheMatrix
+CienciaFiccion,Joven,Alta,TheMatrix
+
 CienciaFiccion,Adulto,Media,Inception
+CienciaFiccion,Adulto,Baja,Inception
+CienciaFiccion,Joven,Media,Inception
