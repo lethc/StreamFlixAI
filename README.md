@@ -2,6 +2,9 @@
 
 Sistema de recomendación de películas desarrollado con Java Web, JSP, Apache Tomcat y Weka.
 
+<img width="1235" height="900" alt="image" src="https://github.com/user-attachments/assets/5042e3ef-aab0-4136-89e1-b08b7c1d9c90" />
+
+
 El proyecto utiliza un árbol de decisión J48 para analizar las preferencias del usuario y generar recomendaciones personalizadas de películas según:
 
 - Género
