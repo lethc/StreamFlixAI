@@ -1,5 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@page import="java.util.Random"%>
 <%@page import="weka.classifiers.Evaluation"%>
@@ -15,7 +14,6 @@
 <title>Recomendación</title>
 
 <style>
-
 body {
 	margin: 0;
 	font-family: Arial, sans-serif;
@@ -38,13 +36,9 @@ body {
 }
 
 .header {
-
 	display: flex;
-
 	justify-content: space-between;
-
 	align-items: center;
-
 	margin-bottom: 20px;
 }
 
@@ -55,20 +49,19 @@ h1 {
 
 .contenido {
 	display: flex;
-	gap: 40px;
+	gap: 50px;
 	align-items: flex-start;
-	justify-content: center;
 	margin-top: 20px;
 }
 
 .poster {
-	width: 300px;
+	width: 360px;
 	border-radius: 20px;
 }
 
 .info {
 	flex: 1;
-	text-align: left;
+	padding-top: 15px;
 }
 
 .info h2 {
@@ -78,35 +71,30 @@ h1 {
 }
 
 .detalles {
-
 	color: #bbb;
-
 	font-size: 18px;
-
 	margin-bottom: 15px;
 }
 
 .badge {
-
 	display: inline-block;
-
 	padding: 8px 15px;
-
 	border-radius: 20px;
-
 	background: #333;
-
 	color: #ddd;
-
 	font-size: 14px;
 }
 
+.descripcionIA {
+	color: #aaa;
+	line-height: 1.7;
+	margin-top: 20px;
+	max-width: 550px;
+}
+
 .divider {
-
 	height: 1px;
-
 	background: #444;
-
 	margin: 25px 0;
 }
 
@@ -114,17 +102,16 @@ h1 {
 	display: flex;
 	gap: 20px;
 	overflow-x: auto;
-	justify-content: flex-start;
 	padding-top: 10px;
 }
 
 .mini-card {
-	min-width: 170px;
+	min-width: 140px;
 	text-align: center;
 }
 
 .mini-poster {
-	width: 150px;
+	width: 120px;
 	border-radius: 15px;
 	transition: 0.3s;
 }
@@ -147,192 +134,333 @@ h1 {
 	background: #b20710;
 }
 
+/* ---------------------------
+   MÉTRICAS DEL MODELO IA
+---------------------------- */
+.metricas {
+	display: flex;
+	gap: 15px;
+	margin-top: 20px;
+	flex-wrap: wrap;
+}
+
+.metrica {
+	background: #2d2d2d;
+	padding: 15px;
+	border-radius: 15px;
+	min-width: 160px;
+}
+
+.metrica span {
+	display: block;
+	color: #999;
+	font-size: 12px;
+	margin-bottom: 5px;
+}
+
+.metrica strong {
+	font-size: 24px;
+	color: white;
+}
+
+/* ---------------------------
+   ÁRBOL J48 DESPLEGABLE
+---------------------------- */
+details {
+	margin-top: 25px;
+	background: #2d2d2d;
+	padding: 15px;
+	border-radius: 15px;
+}
+
+summary {
+	cursor: pointer;
+	font-weight: bold;
+	color: #e50914;
+}
+
+pre {
+	white-space: pre-wrap;
+	color: #ccc;
+	font-size: 12px;
+	margin-top: 15px;
+}
+
+.perfil {
+	/* 	margin-top: 20px;
+	padding: 20px;
+	background: #2d2d2d;
+	border-radius: 15px; */
+	color: #ddd;
+	/* line-height: 1.6; */
+}
+
+.perfil h3 {
+	margin-top: 0;
+	color: #e50914;
+}
+
+.perfil strong {
+	color: white;
+}
+
+.poster-container {
+	margin-top: 20px;
+}
 </style>
 
 </head>
 <body>
 
-<div class="card">
+	<div class="card">
 
-<%
+		<%
+		try {
 
-try{
+			/* =====================================
+			   DATOS RECIBIDOS DEL FORMULARIO
+			===================================== */
 
-	String genero =
-		request.getParameter("genero");
+			String genero = request.getParameter("genero");
 
-	String edad =
-		request.getParameter("edad");
+			String edad = request.getParameter("edad");
 
-	String frecuencia =
-		request.getParameter("frecuencia");
+			String frecuencia = request.getParameter("frecuencia");
 
-	String ruta =
-		application.getRealPath(
-			"/data/peliculas.arff");
+			/* =====================================
+			   CARGA DEL DATASET ARFF
+			===================================== */
 
-	DataSource source =
-		new DataSource(ruta);
+			String ruta = application.getRealPath("/data/peliculas.arff");
 
-	Instances data =
-		source.getDataSet();
+			DataSource source = new DataSource(ruta);
 
-	data.setClassIndex(
-		data.numAttributes()-1);
+			Instances data = source.getDataSet();
 
-	J48 arbol =
-		new J48();
+			data.setClassIndex(data.numAttributes() - 1);
 
-	arbol.buildClassifier(data);
+			/* =====================================
+			   ENTRENAMIENTO DEL MODELO J48
+			===================================== */
 
-	Evaluation eval =
-		new Evaluation(data);
+			J48 arbol = new J48();
 
-	eval.crossValidateModel(
-		arbol,
-		data,
-		10,
-		new Random(1));
+			arbol.buildClassifier(data);
 
-	double precision =
-		eval.pctCorrect();
+			/* =====================================
+			   EVALUACIÓN DEL MODELO
+			===================================== */
 
-	Instance nueva =
-		new DenseInstance(
-			data.numAttributes());
+			Evaluation eval = new Evaluation(data);
 
-	nueva.setDataset(data);
+			eval.crossValidateModel(arbol, data, 10, new Random(1));
 
-	nueva.setValue(
-		data.attribute("genero"),
-		genero);
+			double precision = eval.pctCorrect();
 
-	nueva.setValue(
-		data.attribute("edad"),
-		edad);
+			/* =====================================
+			   CREAR NUEVO USUARIO A PREDECIR
+			===================================== */
 
-	nueva.setValue(
-		data.attribute("frecuencia"),
-		frecuencia);
+			Instance nueva = new DenseInstance(data.numAttributes());
 
-	double resultado =
-		arbol.classifyInstance(
-			nueva);
+			nueva.setDataset(data);
 
-	String pelicula =
-		data.classAttribute()
-			.value((int)resultado);
+			nueva.setValue(data.attribute("genero"), genero);
 
-	java.util.ArrayList<String> sugerencias =
-		new java.util.ArrayList<String>();
+			nueva.setValue(data.attribute("edad"), edad);
 
-	if (genero.equals("Accion")) {
+			nueva.setValue(data.attribute("frecuencia"), frecuencia);
 
-		sugerencias.add("Avengers");
-		sugerencias.add("MadMax");
+			/* =====================================
+			   OBTENER PELÍCULA RECOMENDADA
+			===================================== */
 
-	}
-	else if (genero.equals("Comedia")) {
+			double resultado = arbol.classifyInstance(nueva);
 
-		sugerencias.add("TheMask");
-		sugerencias.add("Superbad");
+			String pelicula = data.classAttribute().value((int) resultado);
 
-	}
-	else if (genero.equals("Terror")) {
+			String descripcion = "";
 
-		sugerencias.add("Insidious");
-		sugerencias.add("IT");
+			/* =====================================
+			   RECOMENDACIONES SECUNDARIAS
+			   (SE MUESTRAN CON RECURSIVIDAD)
+			===================================== */
 
-	}
-	else if (genero.equals("Drama")) {
+			java.util.ArrayList<String> sugerencias = new java.util.ArrayList<String>();
 
-		sugerencias.add("ForrestGump");
-		sugerencias.add("PursuitOfHappyness");
+			if (genero.equals("Accion")) {
 
-	}
-	else {
+				sugerencias.add("Avengers");
+				sugerencias.add("JohnWick");
+				sugerencias.add("MadMax");
 
-		sugerencias.add("TheMatrix");
-		sugerencias.add("Inception");
+				descripcion = "Recomendada para usuarios que disfrutan " + "escenas intensas, combates y adrenalina.";
 
-	}
+			} else if (genero.equals("Comedia")) {
 
-%>
+				sugerencias.add("Deadpool");
+				sugerencias.add("TheMask");
+				sugerencias.add("Superbad");
 
-<div class="header">
+				descripcion = "Ideal para usuarios que buscan " + "entretenimiento ligero y divertido.";
 
-	<h1>Película Recomendada</h1>
+			} else if (genero.equals("Terror")) {
 
-	<a class="volver" href="index.jsp">
+				sugerencias.add("TheConjuring");
+				sugerencias.add("Insidious");
+				sugerencias.add("IT");
 
-		Volver
+				descripcion = "Pensada para espectadores que disfrutan " + "suspenso, tensión y experiencias paranormales.";
 
-	</a>
+			} else if (genero.equals("Drama")) {
 
-</div>
+				sugerencias.add("Titanic");
+				sugerencias.add("ForrestGump");
+				sugerencias.add("PursuitOfHappyness");
 
-<div class="contenido">
+				descripcion = "Adecuada para usuarios interesados " + "en historias emocionales y personajes profundos.";
 
-	<div>
+			} else {
+				sugerencias.add("Interstellar");
+				sugerencias.add("TheMatrix");
+				sugerencias.add("Inception");
 
-		<img
-			class="poster"
-			src="img/<%= pelicula.toLowerCase() %>.jpg">
+				descripcion = "Perfecta para personas interesadas " + "en tecnología, ciencia y mundos futuristas.";
 
-	</div>
+			}
+			sugerencias.remove(pelicula);
+		%>
 
-	<div class="info">
+		<!-- CABECERA -->
 
-		<h2>
-			<%= pelicula %>
-		</h2>
+		<div class="header">
 
-		<div class="detalles">
+			<h1>Película Recomendada</h1>
 
-			<%= genero %> • <%= edad %> • <%= frecuencia %>
+			<a class="volver" href="index.jsp"> Volver </a>
 
 		</div>
 
-		<div class="badge">
+		<!-- CONTENIDO PRINCIPAL -->
 
-			Precisión: <%= String.format("%.2f", precision) %>%
+		<div class="contenido">
+
+
+			<div class="poster-container">
+
+				<img class="poster" src="img/<%=pelicula.toLowerCase()%>.jpg">
+
+			</div>
+
+			<div class="info">
+
+				<h2><%=pelicula%></h2>
+
+				<div class="detalles">
+
+					<%=genero%>
+					•
+					<%=edad%>
+					•
+					<%=frecuencia%>
+
+				</div>
+
+				<div class="badge">
+
+					Precisión:
+					<%=String.format("%.2f", precision)%>%
+
+				</div>
+
+				<div class="perfil">
+
+					<!-- 					<h3>Perfil de audiencia</h3>
+ -->
+					<p>
+						<%=descripcion%>
+					</p>
+					<p>
+						Edad predominante: <strong><%=edad%></strong>
+					</p>
+					<p>
+						Frecuencia de visualización: <strong><%=frecuencia%></strong>
+					</p>
+
+
+				</div>
+
+				<!-- 				<p class="descripcionIA">Esta recomendación fue generada
+					utilizando un árbol de decisión J48 entrenado con Weka, analizando
+					género, edad y frecuencia de visualización.</p> -->
+
+				<div class="divider"></div>
+
+				<h3>Más películas similares</h3>
+
+				<div class="recomendaciones">
+
+					<%=Recursividad.mostrarPeliculas(sugerencias, 0)%>
+
+				</div>
+
+			</div>
 
 		</div>
 
-		<div class="divider"></div>
+		<!-- =====================================
+     	SECCIÓN TÉCNICA DEL PROYECTO
+		===================================== -->
 
-		<h3>Más películas similares</h3>
+<%-- 		<div class="divider"></div>
 
-		<div class="recomendaciones">
+		<h3>Métricas del modelo</h3>
 
-			<%= Recursividad.mostrarPeliculas(
-					sugerencias,
-					0)
-			%>
+		<div class="metricas">
 
-		</div>
+			<div class="metrica">
 
-	</div>
+				<span>Precisión</span> <strong> <%=String.format("%.2f", eval.pctCorrect())%>%
 
-</div>
+				</strong>
 
-<%
+			</div>
 
-}catch(Exception e){
+			<div class="metrica">
 
-%>
+				<span>Error Medio</span> <strong> <%=String.format("%.3f", eval.meanAbsoluteError())%>
 
-<h3>Error</h3>
+				</strong>
 
-<pre>
-<%= e.getMessage() %>
+			</div>
+
+		</div> --%>
+
+		<details>
+
+			<summary> Ver árbol de decisión J48 </summary>
+
+			<pre>
+<%=arbol.toString()%>
+	</pre>
+
+		</details>
+
+		<%
+		} catch (Exception e) {
+		%>
+
+		<h3>Error</h3>
+
+		<pre>
+<%=e.getMessage()%>
 </pre>
 
-<%
+		<%
 }
 %>
 
-</div>
+	</div>
 
 </body>
 </html>
