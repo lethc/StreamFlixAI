@@ -1,0 +1,44 @@
+@relation peliculas
+
+@attribute genero {Accion,Comedia,Terror,Drama,CienciaFiccion}
+@attribute edad {Joven,Adulto}
+@attribute frecuencia {Baja,Media,Alta}
+@attribute recomendacion {
+Avengers,
+JohnWick,
+MadMax,
+Deadpool,
+TheMask,
+Superbad,
+TheConjuring,
+Insidious,
+IT,
+Titanic,
+ForrestGump,
+PursuitOfHappyness,
+Interstellar,
+TheMatrix,
+Inception
+}
+
+@data
+
+Accion,Joven,Alta,Avengers
+Accion,Joven,Media,JohnWick
+Accion,Adulto,Alta,MadMax
+
+Comedia,Joven,Alta,Deadpool
+Comedia,Joven,Media,TheMask
+Comedia,Adulto,Alta,Superbad
+
+Terror,Joven,Alta,TheConjuring
+Terror,Adulto,Media,Insidious
+Terror,Adulto,Baja,IT
+
+Drama,Adulto,Alta,Titanic
+Drama,Adulto,Media,ForrestGump
+Drama,Joven,Baja,PursuitOfHappyness
+
+CienciaFiccion,Joven,Alta,Interstellar
+CienciaFiccion,Adulto,Alta,TheMatrix
+CienciaFiccion,Adulto,Media,Inception
